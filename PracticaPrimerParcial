@@ -1,0 +1,106 @@
+import scala.annotation.tailrec
+object PracticaPreExamen {
+
+    def decimalABinario(numero: Int): String = {
+        if (numero == 0) "0"
+        else if (numero == 1) "1"
+        else decimalABinario(numero / 2) + (numero % 2).toString
+    }
+
+
+    def digitoMayor(numero: Int): Int = {
+        if (numero < 10) numero
+        else {
+            val digitoActual = numero % 10
+            val digitoMayorRestante = digitoMayor(numero / 10)
+            if (digitoActual > digitoMayorRestante) digitoActual
+            else digitoMayorRestante
+        }
+    }
+
+
+    def contarDigitosPares(numero: Int): Int = {
+        if (numero == 0) 0
+        else {
+            val digitoActual = numero % 10
+            val esPar = if (digitoActual % 2 == 0) 1 else 0
+            esPar + contarDigitosPares(numero / 10)
+        }
+    }
+
+    def contarDigito(numero: Int, digitoBuscado: Int): Int = {
+        if (numero == 0) 0
+        else {
+            val digitoActual = numero % 10
+            val esDigitoBuscado = if (digitoActual == digitoBuscado) 1 else 0
+            esDigitoBuscado + contarDigito(numero / 10, digitoBuscado)
+        }
+    }
+
+    def extraerPares(numero: Int): String = {
+        if (numero == 0) ""
+        else {
+            val digitoActual = numero % 10
+            val esPar = if (digitoActual % 2 == 0) digitoActual.toString else ""
+            extraerPares(numero / 10) + esPar
+        }
+    }
+
+    @tailrec
+    def sumaDigitosPares(numero: Int, suma: Int = 0): Int = {
+        if (numero == 0) suma
+        else {
+            val digitoActual = numero % 10
+            val nuevaSuma = if (digitoActual % 2 == 0) suma + digitoActual else suma
+            sumaDigitosPares(numero / 10, nuevaSuma)
+        }
+    }
+
+    @tailrec
+    def contarMayusculas(palabra: String, contador: Int = 0): Int = {
+        if (palabra.isEmpty) contador
+        else {
+            val primerCaracter = palabra.head
+            val nuevaCuenta = if (primerCaracter.isUpper) contador + 1 else contador
+            contarMayusculas(palabra.tail, nuevaCuenta)
+        }
+    }
+
+    @tailrec
+    def contarCambiosParidad(numero: Int, contador: Int = 0): Int = {
+        if (numero < 10) contador
+        else {
+            val digitoActual = numero % 10
+            val digitoSiguiente = (numero / 10) % 10
+            val esCambioDeParidad = (digitoActual % 2) != (digitoSiguiente % 2)
+            val nuevaCuenta = if (esCambioDeParidad) contador + 1 else contador
+            contarCambiosParidad(numero / 10, nuevaCuenta)
+        }
+    }
+
+    @tailrec
+    def segundoMayorDigito(numero: Int, mayor: Int = -1, segundoMayor: Int = -1): Int = {
+        if (numero == 0) segundoMayor
+        else {
+            val digitoActual = numero % 10
+            val (nuevoMayor, nuevoSegundoMayor) =
+                if (digitoActual > mayor) (digitoActual, mayor)
+                else if (digitoActual > segundoMayor && digitoActual != mayor) (mayor, digitoActual)
+                else (mayor, segundoMayor)
+            segundoMayorDigito(numero / 10, nuevoMayor, nuevoSegundoMayor)
+        }
+    }
+
+    @tailrec
+    def rachaMaxima(texto: String): Int = {
+        if (texto.isEmpty) 0
+            else {
+                val primerCaracter = texto.head
+                val (rachaActual, rachaMaxima) = contarRacha(texto, primerCaracter, 0, 0)
+                Math.max(rachaActual, rachaMaxima)
+            }
+    }
+      
+}
+
+  
